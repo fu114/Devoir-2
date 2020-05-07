@@ -1,6 +1,6 @@
-Scripts\Commands\testest.py
-Scripts\Commands\test.py
-.vscode
+Scripts/Commands/testest.py
+Scripts/Commands/test.py
+.vscode/
 tempCodeRunnerFile.py
-Scripts\Interface\__pycache__
-Scripts\Commands\__pycache__
+Scripts/Interface/__pycache__/
+Scripts/Commands/__pycache__/
