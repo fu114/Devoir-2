@@ -6,7 +6,17 @@ from tkinter import ttk
 import os
 
 db_path = os.path.join(os.path.split(os.path.split(os.path.dirname(__file__))[0])[0],'data\Marks.db')
-
+db = sqlite3.connect(db_path)
+db.execute('CREATE TABLE if NOT EXISTS Marks(\
+            "ID"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\
+            "Nom"	VARCHAR(20),\
+            "Note"	DECIMAL,\
+            "Redoublant"	VARCHAR(3),\
+            "Comment"	TEXT,\
+            CONSTRAINT CHK_Redoublant CHECK (Redoublant=\'Oui\' or Redoublant=\'Non\')\
+            )')
+db.commit()
+db.close()
 db = sqlite3.connect(db_path)
 db.row_factory=sqlite3.Row
 result = db.execute('SELECT * FROM Marks')

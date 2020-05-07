@@ -7,8 +7,11 @@ import os
 class SQLrequests:
     DB_PATH = os.path.join(os.path.split(os.path.split(os.path.dirname(__file__))[0])[0],'data\Marks.db')
     
-    def __init__(self, db_path):
-        self.db_path = db_path
+    def __init__(self, *args):
+        if len(args) == 0:
+            self.db_path = self.DB_PATH
+        else:
+            self.db_path = db_path
         self.db = sqlite3.connect(self.db_path)
         self.db.execute('CREATE TABLE if NOT EXISTS Marks(\
             "ID"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\
@@ -21,8 +24,6 @@ class SQLrequests:
         self.db.commit()
         self.db.close()
 
-    def __init__(self):
-        self.db_path = self.DB_PATH
 
     def ajouter(self, name, note, redoublant, appreciation):
         try:
