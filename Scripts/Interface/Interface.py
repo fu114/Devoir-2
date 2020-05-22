@@ -1,6 +1,10 @@
 from tkinter import *
 from tkinter import ttk
-from ..Commands.SQLrequests import *
+from Scripts.Commands.SQLrequests import *
+from Scripts.Gaphes.Graph import *
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
 
 class Interface:
     def __init__(self, master):
@@ -43,7 +47,8 @@ class Interface:
         ttk.Button(self.master, text='Liste des notes', command=lambda :self.tree()).grid(row=4, column=1)
         ttk.Button(self.master,text='Ajouter', command=lambda: req.ajouter(self.name_entry.get(), self.note_entry.get(),\
             self.redoublant_choix.get(), self.appreciation_text.get(1.0, END))).grid(row=4, column=2)
-        ttk.Button(self.master, text='Clear', command=lambda :req.clear_table()).grid(row=4, column=0)
+        #ttk.Button(self.master, text='Clear', command=req.clear_table).grid(row=4, column=0)
+        ttk.Button(self.master, text='Graphes', command=self.graphes).grid(row=4, column=0)
     
     def tree(self):
         req=SQLrequests()
@@ -97,3 +102,24 @@ class Interface:
                 mod.mainloop()
         ttk.Button(tree_master, text='Modifier', command=lambda: mod(tree.focus())).pack(side=RIGHT)
         tree_master.mainloop()
+
+    def graphes(self):
+        Graph_root = Tk()
+        graph = Graph()
+
+        figure1 = plt.Figure(figsize=(8,6),dpi=100)
+        ax1 = figure1.add_subplot(111)
+        bar_plot = FigureCanvasTkAgg(figure1, Graph_root)
+        bar_plot.get_tk_widget().pack(side=LEFT)
+        df1 = graph.bar_chart_df()
+        df1 = df1[['Nom','Note']].groupby('Nom').sum()
+        df1.plot(kind='bar', legend=True, ax=ax1)
+        ax1.set_title('Les étudiants et leurs notes')
+        
+        figure2 = plt.Figure(figsize=(6,6), dpi=100) 
+        pie_plot = figure2.add_subplot(111) 
+        labels = '>=11','<11'
+        pieSizes = graph.pie_chart_list()  
+        pie_plot.pie(pieSizes, labels=labels, colors=['green', 'red'], autopct='%1.1f%%', startangle=90) 
+        pie2 = FigureCanvasTkAgg(figure2, Graph_root)
+        pie2.get_tk_widget().pack(side=RIGHT)
