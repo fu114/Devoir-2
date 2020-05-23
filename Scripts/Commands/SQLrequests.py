@@ -1,17 +1,11 @@
 import sqlite3
 from tkinter import *
 from tkinter import messagebox
-import os
-
 
 class SQLrequests:
-    DB_PATH = os.path.join(os.path.split(os.path.split(os.path.dirname(__file__))[0])[0],'Data\Marks.db')
     
-    def __init__(self, *args):
-        if len(args) == 0:
-            self.db_path = self.DB_PATH
-        else:
-            self.db_path = args[0]
+    def __init__(self, db_path):
+        self.db_path = db_path
         self.db = sqlite3.connect(self.db_path)
         self.db.execute('CREATE TABLE if NOT EXISTS Marks(\
             "ID"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\
@@ -51,11 +45,12 @@ class SQLrequests:
                         CONSTRAINT CHK_Redoublant CHECK (Redoublant=\'Oui\' or Redoublant=\'Non\')\
                         )')
         self.db.commit()
+        self.db.close()
 
     def get_list(self):
-        db = sqlite3.connect(self.db_path)
-        db.row_factory=sqlite3.Row
-        result = db.execute('SELECT * FROM Marks')
+        self.db = sqlite3.connect(self.db_path)
+        self.db.row_factory=sqlite3.Row
+        result = self.db.execute('SELECT * FROM Marks')
         L=[]
         for row in result:
             T=[]
@@ -65,8 +60,8 @@ class SQLrequests:
             T.append(row['Redoublant'])
             T.append(row['Comment'])
             L.append(T)
-        db.commit()
-        db.close()
+        self.db.commit()
+        self.db.close()
         return L
 
     def supprimer(self, ID):

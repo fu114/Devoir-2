@@ -2,11 +2,8 @@ from pandas import DataFrame
 from Scripts.Commands.SQLrequests import *
 
 class Graph:
-    def __init__(self, *args):
-        if len(args) == 0:
-            req = SQLrequests()
-        else:
-            req = SQLrequests(args[0])
+    def __init__(self, db_path):
+        req = SQLrequests(db_path)
         self.list_notes = []
         for row in req.get_list():
             self.list_notes.append(row)
