@@ -7,3 +7,4 @@ Scripts/Commands/__pycache__/
 Scripts/Gaphes/test.py
 Scripts/Gaphes/__pycache__/
 Scripts/__pycache__/
+*/__pycache__/

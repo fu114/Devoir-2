@@ -75,7 +75,6 @@ class Interface:
             self.set_db_path(os.path.normpath(filename))
             self.buttons()
             self.file_label()
-        
         mb1.add_command(label="Ouvrir", command=open_file)
         mb1.add_command(label='Nouveau', command=new_file)
         mb1.add_command(label="Vider la liste", command=req.clear_table)
