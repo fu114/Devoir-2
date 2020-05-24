@@ -62,12 +62,6 @@ class Interface:
         req=SQLrequests(self.db_path)
         menubar = Menu(self.master)
         mb1 = Menu(menubar, tearoff=0)
-        def open_file():
-            filename = filedialog.askopenfilename(initialdir=os.path.join(os.path.split(os.path.split(os.path.dirname(__file__))[0])[0],'Data'),\
-                 title="Selectionner la base de données", filetypes=(("Fichiers .db", "*.db"),("Tous les fichiers (*.*)", "*.*")))
-            self.set_db_path(os.path.normpath(filename))
-            self.buttons()
-            self.file_label()
         def new_file():
             files = [('Database files', '*.db'), ('All Files', '*.*')]
             filename = filedialog.asksaveasfilename(initialdir=os.path.join(os.path.split(os.path.split(os.path.dirname(__file__))[0])[0],'Data'),\
@@ -75,18 +69,28 @@ class Interface:
             self.set_db_path(os.path.normpath(filename))
             self.buttons()
             self.file_label()
+        def open_file():
+            filename = filedialog.askopenfilename(initialdir=os.path.join(os.path.split(os.path.split(os.path.dirname(__file__))[0])[0],'Data'),\
+                 title="Selectionner la base de données", filetypes=(("Fichiers .db", "*.db"),("Tous les fichiers (*.*)", "*.*")))
+            self.set_db_path(os.path.normpath(filename))
+            self.buttons()
+            self.file_label()
+        
         mb1.add_command(label="Ouvrir", command=open_file)
         mb1.add_command(label='Nouveau', command=new_file)
         mb1.add_command(label="Vider la liste", command=req.clear_table)
         mb1.add_separator()
-        mb1.add_command(label="Quitter", command=self.master.quit)
+        mb1.add_command(label="Quitter", command=self.master.destroy)
         menubar.add_cascade(label="Fichier", menu=mb1)
-        '''
+        def about():
+            about_root = Tk()
+            about_root.title('A propos')
+            Label(about_root,text='Abdellah El filali - ICCN1\nDevoir-2').pack()
+            about_root.mainloop()
         helpmenu = Menu(menubar, tearoff=0)
-        helpmenu.add_command(label="Help Index", command=donothing)
-        helpmenu.add_command(label="About...", command=donothing)
-        menubar.add_cascade(label="Help", menu=helpmenu)
-        '''
+        helpmenu.add_command(label="A propos...", command=about)
+        menubar.add_cascade(label="Aide", menu=helpmenu)
+
         self.master.config(menu=menubar)
     
     def tree(self):
